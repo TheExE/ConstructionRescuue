@@ -6,6 +6,7 @@
         <Image Name="arrow.png" />
         <Project Name="controlls.csd" Type="Layer" />
         <Image Name="crane.png" />
+        <Image Name="crane-wrench.png" />
         <Project Name="MainScene.csd" Type="Scene" />
         <Image Name="white-pixel.png" />
       </RootFolder>
