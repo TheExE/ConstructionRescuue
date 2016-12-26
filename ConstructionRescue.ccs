@@ -1,0 +1,14 @@
+<Solution>
+  <PropertyGroup Name="ConstructionRescue" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Image Name="arrow.png" />
+        <Project Name="controlls.csd" Type="Layer" />
+        <Image Name="crane.png" />
+        <Project Name="MainScene.csd" Type="Scene" />
+        <Image Name="white-pixel.png" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
