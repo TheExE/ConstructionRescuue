@@ -38,16 +38,18 @@ bool HelloWorld::init()
 
 	// World sprites
 	m_Crane = new Crane();
-	m_Crane->init((Sprite*)rootNode->getChildByName("crane"));
+
+	// Rope and hook are part of crane so they should be child of crane
+	Sprite* craneSprite = (Sprite*)rootNode->getChildByName("crane");
+	m_Crane->init(craneSprite, (Sprite*)craneSprite->getChildByName("rope"),
+		(Sprite*)craneSprite->getChildByName("hook"));
 	Sprite* ground = (Sprite*)rootNode->getChildByName("ground");
 	
 	// Create physics body for ground
-	auto groundBody = PhysicsBody::createBox(ground->getContentSize(),
+	/*auto groundBody = PhysicsBody::createBox(ground->getContentSize(),
 		PhysicsMaterial(0.1f, 1.0f, 0.0f));
 	groundBody->setDynamic(false);
-	ground->addComponent(groundBody);
-
-
+	ground->addComponent(groundBody);*/
 
 	// UI elements
 	m_UIDriveLeft = (Sprite*)controlLayer->getChildByName(DRIVE_LEFT_BUTTON);
