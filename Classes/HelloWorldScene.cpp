@@ -44,8 +44,10 @@ bool HelloWorld::init()
 	m_Crane->init(craneSprite, (Sprite*)craneSprite->getChildByName("rope"),
 		(Sprite*)craneSprite->getChildByName("hook"));
 	Sprite* ground = (Sprite*)rootNode->getChildByName("ground");
+	Sprite* sky = (Sprite*)rootNode->getChildByName("sky");
+	sky->setGlobalZOrder(-2);
 	
-	// Create physics body for ground
+	// Create physics body for ground /*  CAUSED CRASH */
 	/*auto groundBody = PhysicsBody::createBox(ground->getContentSize(),
 		PhysicsMaterial(0.1f, 1.0f, 0.0f));
 	groundBody->setDynamic(false);

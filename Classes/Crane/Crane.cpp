@@ -14,8 +14,10 @@ bool Crane::init(cocos2d::Sprite* truckSprite, cocos2d::Sprite* ropeSprite, coco
 	m_RopeSprite = ropeSprite;
 	m_HookSprite = hookSprite;
 
-	// Set behind the crane truck
-	m_RopeSprite->setLocalZOrder(0);
+	// Set rope behind the crane truck
+	m_RopeSprite->setLocalZOrder(-1);
+	m_RopeSprite->setGlobalZOrder(-1);
+
 
 	return truckSprite != nullptr && ropeSprite != nullptr && hookSprite != nullptr;
 }
