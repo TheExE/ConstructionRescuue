@@ -13,6 +13,9 @@
     <Filter Include="src\Crane">
       <UniqueIdentifier>{384f9a56-21e9-40c2-93a6-cd9d6ef0af62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{a43c894e-219a-4650-b5de-cdfc5e532504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Crane\Crane.cpp">
       <Filter>src\Crane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Physics\PhysicsManager.cpp">
+      <Filter>src\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Crane\Crane.h">
       <Filter>src\Crane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Physics\PhysicsManager.h">
+      <Filter>src\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

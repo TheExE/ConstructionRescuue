@@ -31,24 +31,24 @@
           <AbstractNodeData Name="crane" ActionTag="1408454041" Tag="8" IconVisible="False" LeftMargin="46.9789" RightMargin="657.0211" TopMargin="352.6427" BottomMargin="106.3573" FlipX="True" LeftEage="84" RightEage="84" TopEage="59" BottomEage="59" Scale9OriginX="84" Scale9OriginY="59" Scale9Width="88" Scale9Height="63" ctype="ImageViewObjectData">
             <Size X="256.0000" Y="181.0000" />
             <Children>
-              <AbstractNodeData Name="rope" ActionTag="-1721921964" Tag="10" IconVisible="False" LeftMargin="13.1332" RightMargin="241.8668" TopMargin="64.1001" BottomMargin="115.8999" ctype="SpriteObjectData">
+              <AbstractNodeData Name="rope" ActionTag="-1721921964" Tag="10" IconVisible="False" LeftMargin="13.1332" RightMargin="241.8668" TopMargin="14.6001" BottomMargin="165.3999" ctype="SpriteObjectData">
                 <Size X="1.0000" Y="1.0000" />
-                <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-                <Position X="13.6332" Y="116.3999" />
+                <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
+                <Position X="13.6332" Y="166.3999" />
                 <Scale ScaleX="10.0000" ScaleY="100.0000" />
                 <CColor A="255" R="0" G="0" B="0" />
-                <PrePosition X="0.0533" Y="0.6431" />
+                <PrePosition X="0.0533" Y="0.9193" />
                 <PreSize X="0.0039" Y="0.0055" />
                 <FileData Type="Normal" Path="white-pixel.png" Plist="" />
                 <BlendFunc Src="770" Dst="771" />
               </AbstractNodeData>
-              <AbstractNodeData Name="hook" ActionTag="-939720270" Tag="11" IconVisible="False" LeftMargin="4.6186" RightMargin="232.3814" TopMargin="113.7991" BottomMargin="42.2009" ctype="SpriteObjectData">
+              <AbstractNodeData Name="hook" ActionTag="-939720270" Tag="11" IconVisible="False" LeftMargin="4.6186" RightMargin="232.3814" TopMargin="15.5928" BottomMargin="140.4072" ctype="SpriteObjectData">
                 <Size X="19.0000" Y="25.0000" />
-                <AnchorPoint />
-                <Position X="4.6186" Y="42.2009" />
+                <AnchorPoint ScaleX="0.5370" ScaleY="1.0000" />
+                <Position X="14.8218" Y="165.4072" />
                 <Scale ScaleX="1.0000" ScaleY="1.0000" />
                 <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.0180" Y="0.2332" />
+                <PrePosition X="0.0579" Y="0.9139" />
                 <PreSize X="0.0742" Y="0.1381" />
                 <FileData Type="Normal" Path="crane-wrench.png" Plist="" />
                 <BlendFunc Src="1" Dst="771" />

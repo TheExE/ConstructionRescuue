@@ -46,12 +46,6 @@ bool HelloWorld::init()
 	Sprite* ground = (Sprite*)rootNode->getChildByName("ground");
 	Sprite* sky = (Sprite*)rootNode->getChildByName("sky");
 	sky->setGlobalZOrder(-2);
-	
-	// Create physics body for ground /*  CAUSED CRASH */
-	/*auto groundBody = PhysicsBody::createBox(ground->getContentSize(),
-		PhysicsMaterial(0.1f, 1.0f, 0.0f));
-	groundBody->setDynamic(false);
-	ground->addComponent(groundBody);*/
 
 	// UI elements
 	m_UIDriveLeft = (Sprite*)controlLayer->getChildByName(DRIVE_LEFT_BUTTON);
@@ -83,6 +77,11 @@ void HelloWorld::onMouseUp(cocos2d::Event* plainEvent)
 	{
 		m_Crane->stopMovingCrane();
 	}
+	else if (m_UICraneLiftUp->getBoundingBox().containsPoint(mouseEvent->getLocationInView())
+		|| m_UICraneLiftDown->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	{
+		m_Crane->stopMovingRope();
+	}
 }
 
 void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
@@ -90,10 +89,18 @@ void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	if (m_UIDriveLeft->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
 	{
-		m_Crane->startMovingCraneLeft(-10);
+		m_Crane->startMovingCraneLeft(-20);
 	}
 	else if (m_UIDriveRight->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
 	{
-		m_Crane->startMovingCraneRight(10);
+		m_Crane->startMovingCraneRight(20);
+	}
+	else if (m_UICraneLiftUp->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	{
+		m_Crane->startAscendingRope();
+	}
+	else if (m_UICraneLiftDown->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	{
+		m_Crane->startLoweringRope();
 	}
 }
