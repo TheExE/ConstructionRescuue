@@ -1,12 +1,13 @@
 #include "PhysicsManager.h"
+#include "HelloWorldScene.h"
 
 
 using namespace cocos2d;
-// Create physics body for ground /*  CAUSED CRASH */
-/*auto groundBody = PhysicsBody::createBox(ground->getContentSize(),
-PhysicsMaterial(0.1f, 1.0f, 0.0f));
-groundBody->setDynamic(false);
-ground->addComponent(groundBody);*/
+
+PhysicsManager::PhysicsManager()
+{
+
+}
 
 bool PhysicsManager::init(HelloWorld* mainScene)
 {
@@ -16,7 +17,15 @@ bool PhysicsManager::init(HelloWorld* mainScene)
 	return true;
 }
 
-bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
+bool PhysicsManager::onContactBegin(PhysicsContact& contact)
 {
 	return true;
+}
+
+void PhysicsManager::addBoxColider(Sprite* pSprite, bool bIsDynamic)
+{
+	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
+	PhysicsMaterial(0.1f, 1.0f, 0.0f));
+	boxColider->setDynamic(bIsDynamic);
+	pSprite->addComponent(boxColider);
 }

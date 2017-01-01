@@ -47,6 +47,10 @@ bool HelloWorld::init()
 	Sprite* sky = (Sprite*)rootNode->getChildByName("sky");
 	sky->setGlobalZOrder(-2);
 
+	// Init physics
+	m_PhysicsManager = new PhysicsManager();
+	m_PhysicsManager->addBoxColider(ground, false);
+
 	// UI elements
 	m_UIDriveLeft = (Sprite*)controlLayer->getChildByName(DRIVE_LEFT_BUTTON);
 	m_UIDriveRight = (Sprite*)controlLayer->getChildByName(DRIVE_RIGHT_BUTTON);

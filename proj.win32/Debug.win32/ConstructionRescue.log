@@ -1,7 +1,7 @@
-﻿  HelloWorldScene.cpp
-  PhysicsManager.cpp
-c:\cocos\cocos2d-x\cocos2d-x-3.10\cocos\base\ccutf8.h : warning C4819: The file contains a character that cannot be represented in the current code page (1257). Save the file in Unicode format to prevent data loss (compiling source file ..\Classes\Physics\PhysicsManager.cpp)
-c:\cocos\cocos2d-x\cocos2d-x-3.10\cocos\base\ccutf8.h : warning C4819: The file contains a character that cannot be represented in the current code page (1257). Save the file in Unicode format to prevent data loss (compiling source file ..\Classes\HelloWorldScene.cpp)
+﻿  PhysicsManager.cpp
+c:\cocos\cocos2d-x\cocos2d-x-3.10\cocos\base\ccutf8.h : warning C4819: The file contains a character that cannot be represented in the current code page (1257). Save the file in Unicode format to prevent data loss
   60 File(s) copied
+AppDelegate.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library D:\CocosProjects\ConstructionRescuue\proj.win32\Debug.win32\ConstructionRescue.lib and object D:\CocosProjects\ConstructionRescuue\proj.win32\Debug.win32\ConstructionRescue.exp
   ConstructionRescue.vcxproj -> D:\CocosProjects\ConstructionRescuue\proj.win32\Debug.win32\ConstructionRescue.exe
   0 File(s) copied
