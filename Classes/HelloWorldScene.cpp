@@ -10,7 +10,7 @@ using namespace cocostudio::timeline;
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
-    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics();
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
@@ -103,4 +103,9 @@ void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
 	{
 		m_Crane->startLoweringRope();
 	}
+}
+
+void HelloWorld::addListenerWithSceneGraphPriority(cocos2d::EventListener* listener, cocos2d::Node* listeningNode)
+{
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, listeningNode);
 }

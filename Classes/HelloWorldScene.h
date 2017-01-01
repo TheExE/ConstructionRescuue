@@ -17,6 +17,7 @@ public:
     CREATE_FUNC(HelloWorld);
 
 	void update(float deltaTime) override;
+	void addListenerWithSceneGraphPriority(cocos2d::EventListener* listener, cocos2d::Node* listeningNode);
 
 private:
 	Crane* m_Crane;
