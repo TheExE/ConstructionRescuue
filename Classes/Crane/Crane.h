@@ -17,6 +17,8 @@ public:
 	void startMovingCraneLeft(float driveSpeed);
 	void startMovingCraneRight(float driveSpeed);
 	void stopMovingCrane();
+	cocos2d::Sprite* getHookSprite() const;
+	cocos2d::Sprite* getRopeSprite() const;
 
 private:
 	static const float ROPE_MOVE_SPEED;

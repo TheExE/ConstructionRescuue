@@ -33,7 +33,7 @@ void Crane::update(float deltaTime)
 
 	// Move rope
 	m_RopeSprite->setScaleY(m_RopeSprite->getScaleY() + m_RopeMoveSpeed * deltaTime);
-	m_HookSprite->setPositionY(m_RopeSprite->getContentSize().height*175
+	m_HookSprite->setPositionY(m_RopeSprite->getContentSize().height*178
 		+ m_RopeSprite->getContentSize().height * -m_RopeSprite->getScaleY());
 }
 
@@ -65,4 +65,13 @@ void Crane::startAscendingRope()
 void Crane::stopMovingRope()
 {
 	m_RopeMoveSpeed = 0;
+}
+
+cocos2d::Sprite* Crane::getHookSprite() const
+{
+	return m_HookSprite;
+}
+cocos2d::Sprite* Crane::getRopeSprite() const
+{
+	return m_RopeSprite;
 }

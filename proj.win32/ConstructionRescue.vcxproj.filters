@@ -16,6 +16,9 @@
     <Filter Include="src\Physics">
       <UniqueIdentifier>{a43c894e-219a-4650-b5de-cdfc5e532504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Brick">
+      <UniqueIdentifier>{9b0f8075-2892-433b-8b7f-050ba00cebc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Physics\PhysicsManager.cpp">
       <Filter>src\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Brick\Brick.cpp">
+      <Filter>src\Brick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Physics\PhysicsManager.h">
       <Filter>src\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Brick\Brick.h">
+      <Filter>src\Brick</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
