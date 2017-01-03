@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Crane\Crane.h"
 #include "Physics\PhysicsManager.h"
+#include "Brick\Brick.h"
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -23,6 +24,7 @@ public:
 private:
 	Crane* m_Crane;
 	PhysicsManager* m_PhysicsManager;
+	Brick* m_Brick;
 	cocos2d::Sprite* m_UIDriveLeft;
 	cocos2d::Sprite* m_UIDriveRight;
 	cocos2d::Sprite* m_UICraneLiftUp;

@@ -1,4 +1,4 @@
-﻿  Crane.cpp
+﻿  HelloWorldScene.cpp
 c:\cocos\cocos2d-x\cocos2d-x-3.10\cocos\base\ccutf8.h : warning C4819: The file contains a character that cannot be represented in the current code page (1257). Save the file in Unicode format to prevent data loss
   60 File(s) copied
   ConstructionRescue.vcxproj -> D:\CocosProjects\ConstructionRescuue\proj.win32\Debug.win32\ConstructionRescue.exe

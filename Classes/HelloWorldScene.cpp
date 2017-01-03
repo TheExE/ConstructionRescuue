@@ -46,10 +46,23 @@ bool HelloWorld::init()
 	Sprite* ground = (Sprite*)rootNode->getChildByName("ground");
 	Sprite* sky = (Sprite*)rootNode->getChildByName("sky");
 	sky->setGlobalZOrder(-2);
+	
+	// Init bricks
+	m_Brick = new Brick();
+	m_Brick->init((Sprite*)rootNode->getChildByName("brick"));
 
 	// Init physics
 	m_PhysicsManager = new PhysicsManager();
 	m_PhysicsManager->addBoxColider(ground, false);
+	m_PhysicsManager->addBoxColider(m_Brick->getSprite(), true, true);
+	Size craneSpriteSize = craneSprite->getContentSize();
+	craneSpriteSize.width -= craneSpriteSize.width/1.37f;
+	m_PhysicsManager->addCustomBox(craneSprite, craneSpriteSize, true, true);
+	Size hookSpriteSize = m_Crane->getHookSprite()->getContentSize();
+	hookSpriteSize.height = hookSpriteSize.height / 2.f;
+	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, false);
+	// TODO: add tags to bodies
+
 
 	// UI elements
 	m_UIDriveLeft = (Sprite*)controlLayer->getChildByName(DRIVE_LEFT_BUTTON);

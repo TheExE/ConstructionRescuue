@@ -42,7 +42,7 @@
                 <FileData Type="Normal" Path="white-pixel.png" Plist="" />
                 <BlendFunc Src="770" Dst="771" />
               </AbstractNodeData>
-              <AbstractNodeData Name="hook" ActionTag="-939720270" Tag="11" IconVisible="False" LeftMargin="4.6186" RightMargin="232.3814" TopMargin="15.5928" BottomMargin="140.4072" ctype="SpriteObjectData">
+              <AbstractNodeData Name="hook" ActionTag="-939720270" Tag="11" IconVisible="False" LeftMargin="4.6188" RightMargin="232.3812" TopMargin="15.5928" BottomMargin="140.4072" ctype="SpriteObjectData">
                 <Size X="19.0000" Y="25.0000" />
                 <AnchorPoint ScaleX="0.5370" ScaleY="1.0000" />
                 <Position X="14.8218" Y="165.4072" />
@@ -61,6 +61,17 @@
             <PrePosition X="0.1823" Y="0.3076" />
             <PreSize X="0.2667" Y="0.2828" />
             <FileData Type="Normal" Path="crane.png" Plist="" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="brick" ActionTag="147222892" Tag="12" IconVisible="False" LeftMargin="424.0000" RightMargin="408.0000" TopMargin="498.0000" BottomMargin="110.0000" ctype="SpriteObjectData">
+            <Size X="128.0000" Y="32.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="488.0000" Y="126.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5083" Y="0.1969" />
+            <PreSize X="0.0479" Y="0.0719" />
+            <FileData Type="Normal" Path="brick.png" Plist="" />
+            <BlendFunc Src="1" Dst="771" />
           </AbstractNodeData>
         </Children>
       </ObjectData>

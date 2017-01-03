@@ -19,21 +19,27 @@ bool PhysicsManager::init(HelloWorld* mainScene)
 
 bool PhysicsManager::onContactBegin(PhysicsContact& contact)
 {
+	PhysicsShape* shapeA = contact.getShapeA();
+	PhysicsShape* shapeB = contact.getShapeB();
+
+	if(shapeA->)
+
+
 	return true;
 }
 
 void PhysicsManager::addBoxColider(Sprite* pSprite, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
-	PhysicsMaterial(0.1f, 1.0f, 0.0f));
+	PhysicsMaterial(0.1f, 0.1f, 0.3f));
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
 	pSprite->addComponent(boxColider);
 }
-void addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(size,
-		PhysicsMaterial(0.1f, 1.0f, 0.0f));
+		PhysicsMaterial(0.1f, 0.1f, 0.3f));
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
 	pSprite->addComponent(boxColider);
