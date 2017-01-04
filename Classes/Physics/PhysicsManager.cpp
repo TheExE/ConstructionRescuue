@@ -1,5 +1,6 @@
 #include "PhysicsManager.h"
 #include "HelloWorldScene.h"
+#include "../GameConsts.h"
 
 
 using namespace cocos2d;
@@ -19,12 +20,16 @@ bool PhysicsManager::init(HelloWorld* mainScene)
 
 bool PhysicsManager::onContactBegin(PhysicsContact& contact)
 {
-	PhysicsShape* shapeA = contact.getShapeA();
-	PhysicsShape* shapeB = contact.getShapeB();
+	PhysicsBody* bodyA = contact.getShapeA()->getBody();
+	PhysicsBody* bodyB = contact.getShapeB()->getBody();
+	
+	if (bodyA->getName() == HOOK_NODE && bodyB->getName() == BRICK_NODE)
+	{
+		//bodyB->getNode()->setParent(bodyA->getNode());
+		PhysicsJointFixed::construct(bodyA, bodyB, Vec2(0, 0));
+	}
 
-	if(shapeA->)
-
-
+	cocos2d::log("WHY ?????");
 	return true;
 }
 

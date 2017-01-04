@@ -40,19 +40,23 @@ bool HelloWorld::init()
 	m_Crane = new Crane();
 
 	// Rope and hook are part of crane so they should be child of crane
-	Sprite* craneSprite = (Sprite*)rootNode->getChildByName("crane");
-	m_Crane->init(craneSprite, (Sprite*)craneSprite->getChildByName("rope"),
-		(Sprite*)craneSprite->getChildByName("hook"));
-	Sprite* ground = (Sprite*)rootNode->getChildByName("ground");
-	Sprite* sky = (Sprite*)rootNode->getChildByName("sky");
+	Sprite* craneSprite = (Sprite*)rootNode->getChildByName(CRANE_NODE);
+	m_Crane->init(craneSprite, (Sprite*)craneSprite->getChildByName(ROPE_NODE),
+		(Sprite*)craneSprite->getChildByName(HOOK_NODE));
+	Sprite* ground = (Sprite*)rootNode->getChildByName(GROUND_NODE);
+	Sprite* sky = (Sprite*)rootNode->getChildByName(SKY_NODE);
 	sky->setGlobalZOrder(-2);
 	
 	// Init bricks
 	m_Brick = new Brick();
-	m_Brick->init((Sprite*)rootNode->getChildByName("brick"));
+	m_Brick->init((Sprite*)rootNode->getChildByName(BRICK_NODE));
 
 	// Init physics
 	m_PhysicsManager = new PhysicsManager();
+	if (!m_PhysicsManager->init(this))
+	{
+		cocos2d::log("PhysicsManager: Failed to initialize !");
+	}
 	m_PhysicsManager->addBoxColider(ground, false);
 	m_PhysicsManager->addBoxColider(m_Brick->getSprite(), true, true);
 	Size craneSpriteSize = craneSprite->getContentSize();
@@ -60,8 +64,7 @@ bool HelloWorld::init()
 	m_PhysicsManager->addCustomBox(craneSprite, craneSpriteSize, true, true);
 	Size hookSpriteSize = m_Crane->getHookSprite()->getContentSize();
 	hookSpriteSize.height = hookSpriteSize.height / 2.f;
-	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, false);
-	// TODO: add tags to bodies
+	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, true);
 
 
 	// UI elements
