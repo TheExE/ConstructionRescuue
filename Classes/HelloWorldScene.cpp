@@ -64,7 +64,7 @@ bool HelloWorld::init()
 	m_PhysicsManager->addCustomBox(craneSprite, craneSpriteSize, true, true);
 	Size hookSpriteSize = m_Crane->getHookSprite()->getContentSize();
 	hookSpriteSize.height = hookSpriteSize.height / 2.f;
-	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, true);
+	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, false);
 
 
 	// UI elements
