@@ -5,6 +5,10 @@ static const char* HEIGHER_CRANE_BUTTON = "moveCraneUp";
 static const char* DRIVE_LEFT_BUTTON = "moveLeft";
 static const char* DRIVE_RIGHT_BUTTON = "moveRight";
 
+
+// Joint TAGS
+static const char* HOOK_GRAB = "hookGrab";
+
 // Sprite names
 static const char* CRANE_NODE = "crane";
 static const char* HOOK_NODE = "hook";

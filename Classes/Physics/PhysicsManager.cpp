@@ -26,12 +26,17 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 	std::string bodyAName = bodyA->getNode()->getName();
 	std::string bodyBName = bodyB->getNode()->getName();
 
-	if ( (strcmp(bodyAName.c_str(), HOOK_NODE) == 0 && strcmp(bodyBName.c_str(), BRICK_NODE) == 0) ||
-		(strcmp(bodyBName.c_str(), HOOK_NODE) == 0 && strcmp(bodyAName.c_str(), BRICK_NODE) == 0))
+	if ((strcmp(bodyAName.c_str(), HOOK_NODE) == 0 && strcmp(bodyBName.c_str(), BRICK_NODE) == 0) ||
+		(strcmp(bodyAName.c_str(), HOOK_NODE) == 0 && strcmp(bodyBName.c_str(), BRICK_NODE) == 0))
 	{
-		if (bodyA->getJoints().size() == 0)
+
+		if (!containsJoint(bodyA->getJoints(), HOOK_GRAB))
 		{
-			PhysicsJointFixed::construct(bodyA, bodyB, Vec2(0, 0));
+			auto joint = PhysicsJointFixed::construct(bodyA, bodyB, Vec2(0,0));
+			joint->setEnable(true);
+			joint->setMaxForce(10000);
+			joint->setTag(*HOOK_GRAB);
+			bodyA->getWorld()->addJoint(joint);
 		}
 	}
 
@@ -39,21 +44,37 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 	return true;
 }
 
-void PhysicsManager::addBoxColider(Sprite* pSprite, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addBoxColider(Sprite* pSprite, float mass, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
 	PhysicsMaterial(0.1f, 0.1f, 0.3f));
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
 	boxColider->setContactTestBitmask(0xFFFFFFFF);
+	boxColider->setMass(mass);
 	pSprite->addComponent(boxColider);
 }
-void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, float mass, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(size,
 		PhysicsMaterial(0.1f, 0.1f, 0.3f));
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
 	boxColider->setContactTestBitmask(0xFFFFFFFF);
+	boxColider->setMass(mass);
 	pSprite->addComponent(boxColider);
+}
+bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, const char* jointTag) const
+{
+	bool isJointFound = false;
+	for (int i = 0; i < joints.size(); i++)
+	{
+		if (joints.at(i)->getTag() == *jointTag)
+		{
+			isJointFound = true;
+			break;
+		}
+	}
+
+	return isJointFound;
 }

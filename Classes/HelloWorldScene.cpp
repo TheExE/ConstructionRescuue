@@ -57,14 +57,14 @@ bool HelloWorld::init()
 	{
 		cocos2d::log("PhysicsManager: Failed to initialize !");
 	}
-	m_PhysicsManager->addBoxColider(ground, false);
-	m_PhysicsManager->addBoxColider(m_Brick->getSprite(), true, true);
+	m_PhysicsManager->addBoxColider(ground, PHYSICS_INFINITY, false);
+	m_PhysicsManager->addBoxColider(m_Brick->getSprite(), 50, true, true);
 	Size craneSpriteSize = craneSprite->getContentSize();
 	craneSpriteSize.width -= craneSpriteSize.width/1.37f;
-	m_PhysicsManager->addCustomBox(craneSprite, craneSpriteSize, true, true);
+	m_PhysicsManager->addCustomBox(craneSprite, craneSpriteSize, 5000, true, true);
 	Size hookSpriteSize = m_Crane->getHookSprite()->getContentSize();
 	hookSpriteSize.height = hookSpriteSize.height / 2.f;
-	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, false);
+	m_PhysicsManager->addCustomBox(m_Crane->getHookSprite(), hookSpriteSize, 20, false);
 
 
 	// UI elements
