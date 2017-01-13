@@ -23,11 +23,11 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 {
 	PhysicsBody* bodyA = contact.getShapeA()->getBody();
 	PhysicsBody* bodyB = contact.getShapeB()->getBody();
-	std::string bodyAName = bodyA->getNode()->getName();
-	std::string bodyBName = bodyB->getNode()->getName();
+	const char* bodyAName = bodyA->getNode()->getName().c_str();
+	const char* bodyBName = bodyB->getNode()->getName().c_str();
 
-	if ((strcmp(bodyAName.c_str(), HOOK_NODE) == 0 && strcmp(bodyBName.c_str(), BRICK_NODE) == 0) ||
-		(strcmp(bodyAName.c_str(), HOOK_NODE) == 0 && strcmp(bodyBName.c_str(), BRICK_NODE) == 0))
+	if ((strcmp(bodyAName, HOOK_NODE) == 0 && strcmp(bodyBName, BRICK_NODE) == 0) ||
+		(strcmp(bodyBName, HOOK_NODE) == 0 && strcmp(bodyAName, BRICK_NODE) == 0))
 	{
 
 		if (!containsJoint(bodyA->getJoints(), HOOK_GRAB))
