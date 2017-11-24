@@ -39,14 +39,13 @@ bool Crane::initCrane()
 	m_pCraneSprite->addChild(m_pHookSprite);
 	addChild(m_pCraneSprite);
 
-	// Make the crane face the right direction at begining
-	setScaleX(-1);
-
 	// Set positions
 	Vec2 craneStartPosition = Vec2(100, 135);
 	setPosition(craneStartPosition);
-	m_pRopeSprite->setPosition(Vec2(5, 55));
-	m_pHookSprite->setPosition(Vec2(5, 30));
+	
+	int ropeRelativeX = 114;
+	m_pRopeSprite->setPosition(Vec2(ropeRelativeX, 55));
+	m_pHookSprite->setPosition(Vec2(ropeRelativeX, 30));
 
 	// Set rope behind the crane truck
 	int ropeOrderLayer = -1;
@@ -55,25 +54,29 @@ bool Crane::initCrane()
 	// Create physics bodies	
 	Size cranePhysicsBodySize = m_pCraneSprite->getContentSize();
 	cranePhysicsBodySize.width -= cranePhysicsBodySize.width / 1.37f;
-	PhysicsManager::getInstance()->addCustomBox(m_pCraneSprite, cranePhysicsBodySize, CRANE_MASS, true, true);
+	PhysicsManager::getInstance()->addCustomBox(m_pCraneSprite, cranePhysicsBodySize,
+		CRANE_MASS, true, true);
 	
 	Size hookPhysicsBodySize = m_pHookSprite->getContentSize();
 	hookPhysicsBodySize.height = hookPhysicsBodySize.height / 2.f;
-	PhysicsManager::getInstance()->addCustomBox(m_pHookSprite, hookPhysicsBodySize, HOOK_MASS, false);
+	PhysicsManager::getInstance()->addCustomBox(m_pHookSprite, hookPhysicsBodySize,
+		HOOK_MASS, false);
 
-	return m_pCraneSprite != nullptr && m_pRopeSprite != nullptr && m_pHookSprite != nullptr;
+	return m_pCraneSprite != nullptr && m_pRopeSprite != nullptr &&
+		m_pHookSprite != nullptr;
 }
 
 void Crane::update(float deltaTime)
 {
 	// Move crane
-	m_pCraneSprite->setPosition(m_pCraneSprite->getPosition() +
-		cocos2d::Vec2(m_DriveSpeed * deltaTime, 0));
+	Vec2 currenCranePosition = m_pCraneSprite->getPosition();
+	m_pCraneSprite->setPosition(currenCranePosition + Vec2(m_DriveSpeed * deltaTime, 0));
 
 	// Move rope
-	/*m_RopeSprite->setScaleY(m_RopeSprite->getScaleY() + m_RopeMoveSpeed * deltaTime);
-	m_HookSprite->setPositionY(m_RopeSprite->getContentSize().height
-		+ m_RopeSprite->getContentSize().height * -m_RopeSprite->getScaleY());*/
+	float currentRopeScaleY = m_pRopeSprite->getScaleY();
+	m_pRopeSprite->setScaleY(currentRopeScaleY + m_RopeMoveSpeed * deltaTime);
+	m_pHookSprite->setPositionY(m_pRopeSprite->getContentSize().height
+		- m_pRopeSprite->getContentSize().height * currentRopeScaleY);
 }
 
 void Crane::startMovingCrane(float driveSpeed)

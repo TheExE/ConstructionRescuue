@@ -128,15 +128,16 @@ void HelloWorld::update(float deltaTime)
 void HelloWorld::onMouseUp(cocos2d::Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
+	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
 
 	// Check if the click is on specific button
-	if (m_pUIDriveLeft->getBoundingBox().containsPoint(mouseEvent->getLocationInView())
-		|| m_pUIDriveRight->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	if (m_pUIDriveLeft->getBoundingBox().containsPoint(mouseClickPosition)
+		|| m_pUIDriveRight->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->stopMovingCrane();
 	}
-	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseEvent->getLocationInView())
-		|| m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseClickPosition)
+		|| m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->stopMovingRope();
 	}
@@ -145,24 +146,21 @@ void HelloWorld::onMouseUp(cocos2d::Event* plainEvent)
 void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
-	Vec2 positionInView = mouseEvent->getLocationInView();
-	Vec2 leftButtonPosition = m_pUIDriveLeft->getPosition();
-	cocos2d::log("VIEW X:%d, Y:%d", positionInView.x, positionInView.y);
-	cocos2d::log("Left Button X:%d, Y:%d", leftButtonPosition.x, leftButtonPosition.y);
+	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
 	
-	if (m_pUIDriveLeft->getBoundingBox().containsPoint(positionInView))
+	if (m_pUIDriveLeft->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->startMovingCrane(-Crane::MOVE_SPEED);
 	}
-	else if (m_pUIDriveRight->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	else if (m_pUIDriveRight->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->startMovingCrane(Crane::MOVE_SPEED);
 	}
-	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->startMovingTheRope(Crane::ROPE_MOVE_SPEED);
 	}
-	else if (m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseEvent->getLocationInView()))
+	else if (m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->startMovingTheRope(Crane::ROPE_MOVE_SPEED);
 	}

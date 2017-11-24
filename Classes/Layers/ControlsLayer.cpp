@@ -43,14 +43,15 @@ bool ControlsLayer::initControlsLayer()
 	addChild(pButtonRight);
 
 	// Set positions
-	Size buttonSize = pButtonUp->getContentSize();
-	pButtonUp->setPosition(Vec2(buttonSize.width, buttonSize.height*2));
-	pButtonDown->setPosition(Vec2(buttonSize.width, 0));
-	pButtonLeft->setPosition(Vec2(0, buttonSize.height));
-	pButtonRight->setPosition(Vec2(buttonSize.width*2, buttonSize.height));
-
 	Size windowSize = Director::getInstance()->getWinSize();
-	setPosition(windowSize.width - (buttonSize.width * 4), buttonSize.height/2);
+	Size buttonSize = pButtonUp->getContentSize();
+	float buttonPositionX = windowSize.width - (buttonSize.width * 4);
+	pButtonUp->setPosition(Vec2(buttonPositionX + buttonSize.width,
+		buttonSize.height * 3));
+	pButtonDown->setPosition(Vec2(buttonPositionX + buttonSize.width, buttonSize.height));
+	pButtonLeft->setPosition(Vec2(buttonPositionX, buttonSize.height * 2));
+	pButtonRight->setPosition(Vec2(buttonPositionX + buttonSize.width * 2,
+		buttonSize.height * 2));
 
 	return pButtonUp != nullptr && pButtonDown != nullptr && pButtonLeft != nullptr && pButtonRight != nullptr;
 }
