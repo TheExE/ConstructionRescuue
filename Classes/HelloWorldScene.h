@@ -2,35 +2,30 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "Crane\Crane.h"
-#include "Physics\PhysicsManager.h"
-#include "Brick\Brick.h"
+#include "Nodes/Crane/Crane.h"
+#include "Physics/PhysicsManager.h"
+#include "Nodes/Brick/Brick.h"
 
-class HelloWorld : public cocos2d::Layer
+class HelloWorld : public cocos2d::Scene
 {
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();
-
+    virtual bool init();    
+    
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
-	void update(float deltaTime) override;
-	void addListenerWithSceneGraphPriority(cocos2d::EventListener* listener, cocos2d::Node* listeningNode);
+	void update(float deltaTime) override;	
 
 private:
-	Crane* m_Crane;
-	PhysicsManager* m_PhysicsManager;
-	Brick* m_Brick;
-	cocos2d::Sprite* m_UIDriveLeft;
-	cocos2d::Sprite* m_UIDriveRight;
-	cocos2d::Sprite* m_UICraneLiftUp;
-	cocos2d::Sprite* m_UICraneLiftDown;
-	cocos2d::EventListenerMouse* m_MouseListener;
-
+	Crane* m_pCrane;
+	Brick* m_pBrick;	
+	cocos2d::Sprite* m_pUIDriveLeft;
+	cocos2d::Sprite* m_pUIDriveRight;
+	cocos2d::Sprite* m_pUICraneMoveUp;
+	cocos2d::Sprite* m_pUICraneMoveDown;
+	cocos2d::EventListenerMouse* m_pMouseListener;
 
 	void onMouseUp(cocos2d::Event* plainEvent);
 	void onMouseDown(cocos2d::Event* plainEvent);

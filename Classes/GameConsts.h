@@ -1,10 +1,10 @@
 #pragma once
 
-static const char* LOWER_CRANE_BUTTON = "moveCraneDown";
-static const char* HEIGHER_CRANE_BUTTON = "moveCraneUp";
-static const char* DRIVE_LEFT_BUTTON = "moveLeft";
-static const char* DRIVE_RIGHT_BUTTON = "moveRight";
-
+// Button image ids
+static const char* BUTTON_DOWN = "buttonDown";
+static const char* BUTTON_UP = "buttonUp";
+static const char* BUTTON_LEFT = "buttonLeft";
+static const char* BUTTON_RIGHT = "buttonRight";
 
 // Joint TAGS
 static const char* HOOK_GRAB = "hookGrab";

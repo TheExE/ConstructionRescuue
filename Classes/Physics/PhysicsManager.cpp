@@ -2,7 +2,6 @@
 #include "HelloWorldScene.h"
 #include "../GameConsts.h"
 
-
 using namespace cocos2d;
 
 PhysicsManager::PhysicsManager()
@@ -10,15 +9,23 @@ PhysicsManager::PhysicsManager()
 
 }
 
-bool PhysicsManager::init(HelloWorld* mainScene)
+PhysicsManager* PhysicsManager::getInstance()
+{
+	static PhysicsManager manager;
+	return &manager;
+}
+
+bool PhysicsManager::setContactListenerContext(Node* pNode)
 {
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(PhysicsManager::onContactBegin, this);
-	mainScene->addListenerWithSceneGraphPriority(contactListener, mainScene);
-	cocos2d::log("Physics manager is initialized !");
+	pNode->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, pNode);
 	return true;
 }
 
+/*
+ * Callback for when 2 object goes into contact.
+*/
 bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 {
 	PhysicsBody* bodyA = contact.getShapeA()->getBody();
@@ -32,9 +39,9 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 
 		if (!containsJoint(bodyA->getJoints(), HOOK_GRAB))
 		{
-			auto joint = PhysicsJointFixed::construct(bodyA, bodyB, Vec2(0,0));
+			auto joint = PhysicsJointFixed::construct(bodyA, bodyB, Vec2::ZERO);
 			joint->setEnable(true);
-			joint->setMaxForce(10000);
+			joint->setMaxForce(Crane::HOOK_MAX_FORCE);
 			joint->setTag(*HOOK_GRAB);
 			bodyA->getWorld()->addJoint(joint);
 		}
@@ -44,30 +51,38 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 	return true;
 }
 
+/*
+* Add box colider using sprite size.
+*/
 void PhysicsManager::addBoxColider(Sprite* pSprite, float mass, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
-	PhysicsMaterial(0.1f, 0.1f, 0.3f));
+		DEFAULT_PHYSICS_MATERIAL);
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
-	boxColider->setContactTestBitmask(0xFFFFFFFF);
+	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);
 	boxColider->setMass(mass);
 	pSprite->addComponent(boxColider);
 }
+
+/*
+ * Add box colider with custom size.
+*/
 void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, float mass, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(size,
-		PhysicsMaterial(0.1f, 0.1f, 0.3f));
+		DEFAULT_PHYSICS_MATERIAL);
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
-	boxColider->setContactTestBitmask(0xFFFFFFFF);
+	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);
 	boxColider->setMass(mass);
 	pSprite->addComponent(boxColider);
 }
+
 bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, const char* jointTag) const
 {
 	bool isJointFound = false;
-	for (int i = 0; i < joints.size(); i++)
+	for (int i = 0; i < (int)joints.size(); i++)
 	{
 		if (joints.at(i)->getTag() == *jointTag)
 		{

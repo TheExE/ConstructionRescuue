@@ -3,8 +3,6 @@
   <SolutionFolder>
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
-        <Image Name="arrow.png" />
-        <Image Name="brick.png" />
         <Project Name="controlls.csd" Type="Layer" />
         <Image Name="crane.png" />
         <Image Name="crane-wrench.png" />

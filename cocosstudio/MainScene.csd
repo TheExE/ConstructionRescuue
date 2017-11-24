@@ -1,77 +1,76 @@
 <GameFile>
-  <PropertyGroup Name="MainScene" Type="Scene" ID="a2ee0952-26b5-49ae-8bf9-4f1d6279b798" Version="3.10.0.0" />
+  <PropertyGroup Name="MainScene" Type="Scene" ID="92d45998-3621-4550-b2e6-99781c3877eb" Version="3.10.0.0" />
   <Content ctype="GameProjectContent">
     <Content>
       <Animation Duration="0" Speed="1.0000" />
-      <ObjectData Name="Scene" Tag="7" ctype="GameNodeObjectData">
+      <ObjectData Name="Scene" Tag="2" ctype="GameNodeObjectData">
         <Size X="960.0000" Y="640.0000" />
         <Children>
-          <AbstractNodeData Name="sky" ActionTag="18226465" Tag="6" RotationSkewY="-0.0015" IconVisible="False" LeftMargin="387.8719" RightMargin="571.1281" TopMargin="262.8263" BottomMargin="376.1737" ctype="SpriteObjectData">
+          <AbstractNodeData Name="ground" ActionTag="1393643541" Tag="4" IconVisible="False" LeftMargin="475.5979" RightMargin="483.4021" TopMargin="586.5019" BottomMargin="52.4981" ctype="SpriteObjectData">
             <Size X="1.0000" Y="1.0000" />
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="388.3719" Y="376.6737" />
-            <Scale ScaleX="1162.1267" ScaleY="536.8896" />
-            <CColor A="255" R="30" G="144" B="255" />
-            <PrePosition X="0.4046" Y="0.5886" />
+            <Position X="476.0979" Y="52.9981" />
+            <Scale ScaleX="985.1355" ScaleY="108.2608" />
+            <CColor A="255" R="93" G="91" B="91" />
+            <PrePosition X="0.4959" Y="0.0828" />
             <PreSize X="0.0010" Y="0.0016" />
             <FileData Type="Normal" Path="white-pixel.png" Plist="" />
             <BlendFunc Src="770" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="ground" ActionTag="-1444533808" Tag="7" IconVisible="False" LeftMargin="-25.0220" RightMargin="984.0220" TopMargin="648.5168" BottomMargin="-9.5168" ctype="SpriteObjectData">
+          <AbstractNodeData Name="sky" ActionTag="-1673646548" Tag="5" IconVisible="False" LeftMargin="458.9906" RightMargin="500.0094" TopMargin="266.1184" BottomMargin="372.8816" ctype="SpriteObjectData">
             <Size X="1.0000" Y="1.0000" />
-            <AnchorPoint />
-            <Position X="-25.0220" Y="-9.5168" />
-            <Scale ScaleX="1000.0000" ScaleY="116.9083" />
-            <CColor A="255" R="191" G="191" B="191" />
-            <PrePosition X="-0.0261" Y="-0.0149" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="459.4906" Y="373.3816" />
+            <Scale ScaleX="1004.7468" ScaleY="544.4169" />
+            <CColor A="255" R="102" G="133" B="238" />
+            <PrePosition X="0.4786" Y="0.5834" />
             <PreSize X="0.0010" Y="0.0016" />
             <FileData Type="Normal" Path="white-pixel.png" Plist="" />
             <BlendFunc Src="770" Dst="771" />
           </AbstractNodeData>
-          <AbstractNodeData Name="crane" ActionTag="1408454041" Tag="8" IconVisible="False" LeftMargin="46.9789" RightMargin="657.0211" TopMargin="352.6427" BottomMargin="106.3573" FlipX="True" LeftEage="84" RightEage="84" TopEage="59" BottomEage="59" Scale9OriginX="84" Scale9OriginY="59" Scale9Width="88" Scale9Height="63" ctype="ImageViewObjectData">
+          <AbstractNodeData Name="brick" ActionTag="1359678211" Tag="6" IconVisible="False" LeftMargin="531.5652" RightMargin="427.4348" TopMargin="515.4750" BottomMargin="123.5250" Scale9Width="1" Scale9Height="1" ctype="ImageViewObjectData">
+            <Size X="1.0000" Y="1.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="532.0652" Y="124.0250" />
+            <Scale ScaleX="213.7865" ScaleY="26.0474" />
+            <CColor A="255" R="53" G="0" B="0" />
+            <PrePosition X="0.5542" Y="0.1938" />
+            <PreSize X="0.0010" Y="0.0016" />
+            <FileData Type="Normal" Path="white-pixel.png" Plist="" />
+          </AbstractNodeData>
+          <AbstractNodeData Name="crane" ActionTag="602431124" Tag="7" IconVisible="False" LeftMargin="16.7241" RightMargin="687.2759" TopMargin="349.4608" BottomMargin="109.5392" LeftEage="84" RightEage="84" TopEage="59" BottomEage="59" Scale9OriginX="84" Scale9OriginY="59" Scale9Width="88" Scale9Height="63" ctype="ImageViewObjectData">
             <Size X="256.0000" Y="181.0000" />
             <Children>
-              <AbstractNodeData Name="rope" ActionTag="-1721921964" Tag="10" IconVisible="False" LeftMargin="13.1332" RightMargin="241.8668" TopMargin="14.6001" BottomMargin="165.3999" ctype="SpriteObjectData">
+              <AbstractNodeData Name="rope" ActionTag="267271172" Tag="9" IconVisible="False" LeftMargin="5.7776" RightMargin="249.2224" TopMargin="65.2580" BottomMargin="114.7420" ctype="SpriteObjectData">
                 <Size X="1.0000" Y="1.0000" />
-                <AnchorPoint ScaleX="0.5000" ScaleY="1.0000" />
-                <Position X="13.6332" Y="166.3999" />
-                <Scale ScaleX="10.0000" ScaleY="100.0000" />
-                <CColor A="255" R="0" G="0" B="0" />
-                <PrePosition X="0.0533" Y="0.9193" />
+                <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+                <Position X="6.2776" Y="115.2420" />
+                <Scale ScaleX="6.5490" ScaleY="113.8441" />
+                <CColor A="255" R="82" G="82" B="82" />
+                <PrePosition X="0.0245" Y="0.6367" />
                 <PreSize X="0.0039" Y="0.0055" />
                 <FileData Type="Normal" Path="white-pixel.png" Plist="" />
                 <BlendFunc Src="770" Dst="771" />
               </AbstractNodeData>
-              <AbstractNodeData Name="hook" ActionTag="-939720270" Tag="11" IconVisible="False" LeftMargin="4.6188" RightMargin="232.3812" TopMargin="15.5928" BottomMargin="140.4072" ctype="SpriteObjectData">
+              <AbstractNodeData Name="hook" ActionTag="-1041647817" Tag="10" IconVisible="False" LeftMargin="-3.2227" RightMargin="240.2227" TopMargin="122.4830" BottomMargin="33.5170" ctype="SpriteObjectData">
                 <Size X="19.0000" Y="25.0000" />
-                <AnchorPoint ScaleX="0.5370" ScaleY="1.0000" />
-                <Position X="14.8218" Y="165.4072" />
-                <Scale ScaleX="1.0000" ScaleY="1.0000" />
-                <CColor A="255" R="255" G="255" B="255" />
-                <PrePosition X="0.0579" Y="0.9139" />
+                <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+                <Position X="6.2773" Y="46.0170" />
+                <Scale ScaleX="1.1822" ScaleY="1.2077" />
+                <CColor A="255" R="0" G="0" B="0" />
+                <PrePosition X="0.0245" Y="0.2542" />
                 <PreSize X="0.0742" Y="0.1381" />
                 <FileData Type="Normal" Path="crane-wrench.png" Plist="" />
                 <BlendFunc Src="1" Dst="771" />
               </AbstractNodeData>
             </Children>
             <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="174.9789" Y="196.8573" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <Position X="144.7241" Y="200.0392" />
+            <Scale ScaleX="-1.0000" ScaleY="1.0000" />
             <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.1823" Y="0.3076" />
+            <PrePosition X="0.1508" Y="0.3126" />
             <PreSize X="0.2667" Y="0.2828" />
             <FileData Type="Normal" Path="crane.png" Plist="" />
-          </AbstractNodeData>
-          <AbstractNodeData Name="brick" ActionTag="147222892" Tag="12" IconVisible="False" LeftMargin="424.0000" RightMargin="408.0000" TopMargin="498.0000" BottomMargin="110.0000" ctype="SpriteObjectData">
-            <Size X="128.0000" Y="32.0000" />
-            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
-            <Position X="488.0000" Y="126.0000" />
-            <Scale ScaleX="1.0000" ScaleY="1.0000" />
-            <CColor A="255" R="255" G="255" B="255" />
-            <PrePosition X="0.5083" Y="0.1969" />
-            <PreSize X="0.0479" Y="0.0719" />
-            <FileData Type="Normal" Path="brick.png" Plist="" />
-            <BlendFunc Src="1" Dst="771" />
           </AbstractNodeData>
         </Children>
       </ObjectData>
