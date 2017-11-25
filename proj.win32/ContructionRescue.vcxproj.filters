@@ -28,6 +28,9 @@
     <Filter Include="src\Layers">
       <UniqueIdentifier>{d926880a-78bf-4d80-a235-a76da6d6edfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{41b99ca0-a9a8-4f30-95b4-3b74d6936d43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Layers\ControlsLayer.h">
       <Filter>src\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Utils\Utils.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

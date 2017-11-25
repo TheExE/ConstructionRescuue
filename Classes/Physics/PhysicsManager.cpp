@@ -26,27 +26,26 @@ bool PhysicsManager::setContactListenerContext(Node* pNode)
 /*
  * Callback for when 2 object goes into contact.
 */
-bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
-{
+bool PhysicsManager::onContactBegin(PhysicsContact& contact)
+{	
 	PhysicsBody* bodyA = contact.getShapeA()->getBody();
 	PhysicsBody* bodyB = contact.getShapeB()->getBody();
 	const char* bodyAName = bodyA->getNode()->getName().c_str();
 	const char* bodyBName = bodyB->getNode()->getName().c_str();
 
-	if ((strcmp(bodyAName, HOOK_NODE) == 0 && strcmp(bodyBName, BRICK_NODE) == 0) ||
-		(strcmp(bodyBName, HOOK_NODE) == 0 && strcmp(bodyAName, BRICK_NODE) == 0))
+	// If contact contains some of the listener names then inform the listeners
+	for(int i = 0; i < (int)m_contactListeners.size(); i++)
 	{
-
-		if (!containsJoint(bodyA->getJoints(), HOOK_GRAB))
+		PhysicsContactListener& currentListener = m_contactListeners[i];
+		if (strcmp(bodyAName, currentListener.name) == 0)
 		{
-			auto joint = PhysicsJointFixed::construct(bodyA, bodyB, Vec2::ZERO);
-			joint->setEnable(true);
-			joint->setMaxForce(Crane::HOOK_MAX_FORCE);
-			joint->setTag(*HOOK_GRAB);
-			bodyA->getWorld()->addJoint(joint);
+			currentListener.onContactCallback(PhysicsContactInformation(bodyA, bodyB));			
+		}
+		else if(strcmp(bodyBName, currentListener.name) == 0)
+		{
+			currentListener.onContactCallback(PhysicsContactInformation(bodyB, bodyA));			
 		}
 	}
-
 	
 	return true;
 }
@@ -54,13 +53,14 @@ bool PhysicsManager::onContactBegin(cocos2d::PhysicsContact& contact)
 /*
 * Add box colider using sprite size.
 */
-void PhysicsManager::addBoxColider(Sprite* pSprite, float mass, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addBoxColider(Sprite* pSprite, float mass,
+	bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
 		DEFAULT_PHYSICS_MATERIAL);
 	boxColider->setDynamic(bIsDynamic);
 	boxColider->setGravityEnable(bIsGravityEnabled);
-	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);
+	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);	
 	boxColider->setMass(mass);
 	pSprite->addComponent(boxColider);
 }
@@ -68,7 +68,8 @@ void PhysicsManager::addBoxColider(Sprite* pSprite, float mass, bool bIsDynamic,
 /*
  * Add box colider with custom size.
 */
-void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, float mass, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, 
+	float mass, bool bIsDynamic, bool bIsGravityEnabled)
 {
 	auto boxColider = PhysicsBody::createBox(size,
 		DEFAULT_PHYSICS_MATERIAL);
@@ -79,7 +80,18 @@ void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, 
 	pSprite->addComponent(boxColider);
 }
 
-bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, const char* jointTag) const
+/*
+ * Add body name for which to listen for
+ * contact event.
+ */
+void PhysicsManager::addContactListener(const char* bodyName,
+	ContactCallback onContactBegin)
+{	
+	m_contactListeners.push_back(PhysicsContactListener(bodyName, onContactBegin));
+}
+
+bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, 
+	const char* jointTag) const
 {
 	bool isJointFound = false;
 	for (int i = 0; i < (int)joints.size(); i++)
@@ -90,6 +102,5 @@ bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, c
 			break;
 		}
 	}
-
 	return isJointFound;
 }

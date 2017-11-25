@@ -38,6 +38,9 @@ bool HelloWorld::init()
         return false;
     }
 
+	// Display fps info
+	Director::getInstance()->setDisplayStats(false);
+
 	// Load layout
 	Node* rootNode = Node::create();
 	
@@ -82,11 +85,12 @@ bool HelloWorld::init()
 	// UI elements
 	ControlsLayer* pControlsLayer = ControlsLayer::create();
 	if (pControlsLayer->initControlsLayer())
-	{
+	{		
 		m_pUIDriveLeft = (Sprite*)pControlsLayer->getChildByName(BUTTON_LEFT);
 		m_pUIDriveRight = (Sprite*)pControlsLayer->getChildByName(BUTTON_RIGHT);
 		m_pUICraneMoveDown = (Sprite*)pControlsLayer->getChildByName(BUTTON_DOWN);
 		m_pUICraneMoveUp = (Sprite*)pControlsLayer->getChildByName(BUTTON_UP);
+		m_pUIToggleMagnet = (Sprite*)pControlsLayer->getChildByName(BUTTON_ACTION);
 		if (m_pUIDriveLeft == nullptr)
 		{
 			cocos2d::log("HelloWorldScene: Failed to find UIDriveLeft button !");
@@ -103,6 +107,10 @@ bool HelloWorld::init()
 		{
 			cocos2d::log("HelloWorldScene: Failed to find UICraneMoveDown button !");
 		}
+		if (m_pUIToggleMagnet == nullptr)
+		{
+			cocos2d::log("HelloWorldScene: Failed to find UIToggleMagnet button !");
+		}
 		addChild(pControlsLayer);
 	}
 	else
@@ -114,7 +122,7 @@ bool HelloWorld::init()
 	m_pMouseListener = EventListenerMouse::create();
 	m_pMouseListener->onMouseUp = CC_CALLBACK_1(HelloWorld::onMouseUp, this);
 	m_pMouseListener->onMouseDown = CC_CALLBACK_1(HelloWorld::onMouseDown, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(m_pMouseListener, this);
+	_eventDispatcher->addEventListenerWithFixedPriority(m_pMouseListener, 1);
 	scheduleUpdate();
 
     return true;
@@ -125,7 +133,7 @@ void HelloWorld::update(float deltaTime)
 	m_pCrane->update(deltaTime);
 }
 
-void HelloWorld::onMouseUp(cocos2d::Event* plainEvent)
+void HelloWorld::onMouseUp(Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
@@ -141,9 +149,13 @@ void HelloWorld::onMouseUp(cocos2d::Event* plainEvent)
 	{
 		m_pCrane->stopMovingRope();
 	}
+	else if (m_pUIToggleMagnet->getBoundingBox().containsPoint(mouseClickPosition))
+	{
+		m_pCrane->toggleMagnet();
+	}
 }
 
-void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
+void HelloWorld::onMouseDown(Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
@@ -158,11 +170,11 @@ void HelloWorld::onMouseDown(cocos2d::Event* plainEvent)
 	}
 	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingTheRope(Crane::ROPE_MOVE_SPEED);
+		m_pCrane->startMovingTheRope(-Crane::CHAIN_MOVE_SPEED);
 	}
 	else if (m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingTheRope(Crane::ROPE_MOVE_SPEED);
+		m_pCrane->startMovingTheRope(Crane::CHAIN_MOVE_SPEED);
 	}
 }
 

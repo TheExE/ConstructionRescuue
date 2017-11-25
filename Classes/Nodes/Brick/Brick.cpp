@@ -29,7 +29,7 @@ bool Brick::initBrick()
 
 	return m_pBrickSprite != nullptr;
 }
-cocos2d::Sprite* Brick::getSprite() const 
+Sprite* Brick::getSprite() const 
 {
 	return m_pBrickSprite;
 }

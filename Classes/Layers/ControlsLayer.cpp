@@ -24,6 +24,7 @@ bool ControlsLayer::initControlsLayer()
 	Sprite* pButtonDown = Sprite::create("res/arrow.png");
 	Sprite* pButtonLeft = Sprite::create("res/arrow.png");
 	Sprite* pButtonRight = Sprite::create("res/arrow.png");
+	Sprite* pButtonAction = Sprite::create("res/actionButton.png");
 
 	// Set correct rotations
 	pButtonDown->setRotation(180);
@@ -35,12 +36,14 @@ bool ControlsLayer::initControlsLayer()
 	pButtonDown->setName(BUTTON_DOWN);
 	pButtonLeft->setName(BUTTON_LEFT);
 	pButtonRight->setName(BUTTON_RIGHT);
+	pButtonAction->setName(BUTTON_ACTION);
 
 	// Add buttons to parent
 	addChild(pButtonUp);
 	addChild(pButtonDown);
 	addChild(pButtonLeft);
 	addChild(pButtonRight);
+	addChild(pButtonAction);
 
 	// Set positions
 	Size windowSize = Director::getInstance()->getWinSize();
@@ -52,6 +55,9 @@ bool ControlsLayer::initControlsLayer()
 	pButtonLeft->setPosition(Vec2(buttonPositionX, buttonSize.height * 2));
 	pButtonRight->setPosition(Vec2(buttonPositionX + buttonSize.width * 2,
 		buttonSize.height * 2));
+	Size actionButtonSize = pButtonAction->getContentSize();
+	pButtonAction->setAnchorPoint(Vec2(0, 0));
+	pButtonAction->setPosition(Vec2(actionButtonSize.width, actionButtonSize.height / 2));
 
 	return pButtonUp != nullptr && pButtonDown != nullptr && pButtonLeft != nullptr && pButtonRight != nullptr;
 }

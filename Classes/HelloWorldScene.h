@@ -25,6 +25,7 @@ private:
 	cocos2d::Sprite* m_pUIDriveRight;
 	cocos2d::Sprite* m_pUICraneMoveUp;
 	cocos2d::Sprite* m_pUICraneMoveDown;
+	cocos2d::Sprite* m_pUIToggleMagnet;
 	cocos2d::EventListenerMouse* m_pMouseListener;
 
 	void onMouseUp(cocos2d::Event* plainEvent);
