@@ -2,11 +2,11 @@
 #include "GameConsts.h"
 #include "Physics/PhysicsManager.h"
 #include "Utils/Utils.h"
+#include "Box2D/Dynamics/b2Fixture.h"
+#include "Nodes/Panel/Panel.h"
 
 
 using namespace cocos2d;
-
-const float Crane::CHAIN_MOVE_SPEED = 0.2f;
 
 Crane* Crane::create()
 {
@@ -24,69 +24,106 @@ Crane* Crane::create()
 	return pCrane;
 }
 
-bool Crane::initCrane()
+bool Crane::init()
 {
+	// First call the base class
+	Node::init();
+
 	// Load sprites
-	m_pCraneSprite = Sprite::create("res/crane.png");
+	setTexture("res/crane.png");
 	m_pChainSprite = Sprite::create("res/chain.png");
-	m_pMagnetSprite = Sprite::create("res/magnet.png");
+	m_pMagnetSprite = Sprite::create("res/magnet.png");	
+
+	// Create physics bodies	
+	Size cranePhysicsBodySize = getContentSize();
+	cranePhysicsBodySize.width *= 0.5f;
+	PhysicsManager::getInstance()->addCustomBoxCollider(this,
+		cranePhysicsBodySize, DYNAMIC, CRANE_MASS);	
 
 	// Set names
-	m_pCraneSprite->setName(CRANE_NODE);
+	setName(CRANE_NODE);
 	m_pChainSprite->setName(CHAIN_NODE);
 	m_pMagnetSprite->setName(MAGNET_NODE);
 
 	// Set correct relationships
-	m_pCraneSprite->addChild(m_pChainSprite);
-	m_pCraneSprite->addChild(m_pMagnetSprite);
-	addChild(m_pCraneSprite);
+	addChild(m_pChainSprite);
+	addChild(m_pMagnetSprite); 
 
 	// Set rope anchor in top middle to scale properly
 	m_pChainSprite->setAnchorPoint(Vec2(0.5f, 1));
 
 	// Set positions
-	Vec2 craneStartPosition = Vec2(100, 135);
+	Vec2 craneStartPosition = Vec2(100, 100);
 	setPosition(craneStartPosition);
-	
-	int ropeRelativeX = 114;
-	m_pChainSprite->setPosition(Vec2(ropeRelativeX, 80));
-	m_pMagnetSprite->setPosition(Vec2(ropeRelativeX, 32));
+	setAnchorPoint(Vec2(0.3f, 0.5f));	
+
+	float localPosX = 114;
+	m_pChainSprite->setPosition(Vec2(localPosX, 80)); 
+	m_pMagnetSprite->setPosition(Vec2(localPosX, 32)); 
 
 	// Set rope behind the crane truck
 	int ropeOrderLayer = -1;
 	m_pChainSprite->setLocalZOrder(ropeOrderLayer);
 
-	// Create physics bodies	
-	Size cranePhysicsBodySize = m_pCraneSprite->getContentSize();
-	cranePhysicsBodySize.width -= cranePhysicsBodySize.width / 1.37f;
-	PhysicsManager::getInstance()->addCustomBox(m_pCraneSprite, cranePhysicsBodySize,
-		CRANE_MASS, true, true);
-	
-	Size hookPhysicsBodySize = m_pMagnetSprite->getContentSize();
-	hookPhysicsBodySize.height = hookPhysicsBodySize.height / 2.f;
-	PhysicsManager::getInstance()->addCustomBox(m_pMagnetSprite, hookPhysicsBodySize,
-		MAGNET_MASS, false);
-
-	// Set contact listener
-	PhysicsManager::getInstance()->
-	addContactListener(MAGNET_NODE, CC_CALLBACK_1(Crane::onPhysicsContact, this));
-
 	// At begining magnet is disabled
-	m_bIsMagnetEnabled = false;
+	m_bIsMagnetEnabled = false;	
 
-	return m_pCraneSprite != nullptr && m_pChainSprite != nullptr &&
+	return getTexture() != nullptr && m_pChainSprite != nullptr &&
 		m_pMagnetSprite != nullptr;
 }
 
 void Crane::update(float deltaTime)
 {
-	// Move crane
-	Vec2 currenCranePosition = m_pCraneSprite->getPosition();
-	m_pCraneSprite->setPosition(currenCranePosition + Vec2(m_DriveSpeed * deltaTime, 0));
+	moveCrane();
+	moveRope(deltaTime);
+	
+	// Check magnet
+	if(m_bIsMagnetEnabled && m_pMagnetPanel == nullptr)
+	{
+		m_CurTimeForMagnetCheck += deltaTime;
+		if (m_CurTimeForMagnetCheck > TIME_BETWEEN_MAGNET_CHECK)
+		{
+			/* Cast a ray going from magnet to ground
+			 * and check if panel is intersected.
+			 */
+			Size craneSize = getContentSize();
+			Vec2 craneAchorPosition = Vec2(craneSize.width / 2,
+				craneSize.height / 2);
 
+			// Translate magnet position to world space
+			Vec2 rayStartPosition = Utils::toParentPositionSpace(this,
+				m_pMagnetSprite->getPosition());							
+
+			PhysicsManager::getInstance()->
+				castRay(this, rayStartPosition,
+					rayStartPosition - Vec2(0, MAGNET_WORK_DISTANCE));
+			m_CurTimeForMagnetCheck = 0;
+		}
+	}
+}
+
+void Crane::moveCrane()
+{
+	// Move crane using force
+	b2Body* craneBody = getB2Body();
+	craneBody->ApplyLinearImpulse(b2Vec2(m_DriveSpeed, 0),
+		craneBody->GetWorldCenter(), true);
+	b2Vec2 linearVelocity = craneBody->GetLinearVelocity();
+	if (linearVelocity.x > 1)
+	{
+		craneBody->SetLinearVelocity(b2Vec2(1, 0));
+	}
+	else if (linearVelocity.x < -1)
+	{
+		craneBody->SetLinearVelocity(b2Vec2(-1, 0));
+	}
+}
+
+void Crane::moveRope(float deltaTime)
+{
 	// Move rope	
 	m_pChainSprite->setScaleY(m_pChainSprite->getScaleY() + m_ChainMoveSpeed * deltaTime);
-	
+
 	// Make sure the scale is in valid range
 	float currentRopeScaleY = m_pChainSprite->getScaleY();
 	currentRopeScaleY = Utils::clampValue(currentRopeScaleY, MIN_ROPE_SCALE_Y,
@@ -94,14 +131,19 @@ void Crane::update(float deltaTime)
 	m_pChainSprite->setScaleY(currentRopeScaleY);
 
 	// Finally set magnets position at the end of the chain (in cocos y is up)
-	Size chainSize = m_pChainSprite->getContentSize();	
-	m_pMagnetSprite->setPositionY(m_pChainSprite->getPositionY() - 
+	Size chainSize = m_pChainSprite->getContentSize();
+	m_pMagnetSprite->setPositionY(m_pChainSprite->getPositionY() -
 		chainSize.height * currentRopeScaleY);
 }
 
-void Crane::startMovingCrane(float driveSpeed)
+void Crane::moveCraneRight()
 {
-	m_DriveSpeed = driveSpeed;
+	m_DriveSpeed = MOVE_SPEED;
+}
+
+void Crane::moveCraneLeft()
+{
+	m_DriveSpeed = -MOVE_SPEED;
 }
 
 void Crane::stopMovingCrane()
@@ -109,9 +151,14 @@ void Crane::stopMovingCrane()
 	m_DriveSpeed = 0;
 }
 
-void Crane::startMovingTheRope(float speed)
+void Crane::moveChainUp()
 {
-	m_ChainMoveSpeed = speed;
+	m_ChainMoveSpeed = -CHAIN_MOVE_SPEED;	// Reducing the scale
+}
+
+void Crane::moveChainDown()
+{
+	m_ChainMoveSpeed = CHAIN_MOVE_SPEED;
 }
 
 void Crane::stopMovingRope()
@@ -123,12 +170,6 @@ void Crane::toggleMagnet()
 {
 	m_bIsMagnetEnabled = !m_bIsMagnetEnabled;
 	
-	if(!m_bIsMagnetEnabled && m_MagnetJoint != nullptr)
-	{
-		// Magnet disabled - remove the joint
-		m_MagnetJoint->removeFormWorld();
-		m_MagnetJoint = nullptr;
-	}
 
 	// Debug info
 	if(m_bIsMagnetEnabled)
@@ -138,28 +179,41 @@ void Crane::toggleMagnet()
 	else
 	{
 		cocos2d::log("Crane: Magnet disabled !");
+
+		// Drop the panel
+		if(m_pMagnetPanel != nullptr)
+		{
+			m_pMagnetPanel->detachFromMagnet();
+			m_pMagnetPanel = nullptr;
+		}
 	}
 }
 
-bool Crane::onPhysicsContact(PhysicsContactInformation& contact)
+float32 Crane::ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+	const b2Vec2& normal, float32 fraction)
 {
-	PhysicsBody* pMagnetBody = contact.pListenerShape;
-	PhysicsBody* pOtherBody = contact.pTheOtherShape;
-
-	// If magnet is enabled and it collided with brick then attach the brick to magnet
-	const char* otherBodyName = pOtherBody->getNode()->getName().c_str();	
-	if (strcmp(otherBodyName, BRICK_NODE) == 0)
+	// Check if ray intersected with panel object
+	Panel* pPanel = (Panel*)fixture->GetBody()->GetUserData();
+	
+	if(pPanel != nullptr)
 	{
-		if (m_bIsMagnetEnabled && m_MagnetJoint == nullptr)
-		{			
-			m_MagnetJoint = PhysicsJointFixed::construct(pMagnetBody, pOtherBody,
-				pMagnetBody->getNode()->getPosition() - Vec2(0, m_pMagnetSprite->getContentSize().height/2));
-			m_MagnetJoint->setEnable(true);			
-			m_MagnetJoint->setMaxForce(MAGNET_MAX_FORCE);			
-			m_MagnetJoint->setTag(*MAGNET_JOINT);
-			pMagnetBody->getWorld()->addJoint(m_MagnetJoint);	
-			pOtherBody->setVelocity(Vec2::ZERO);
+		/* If magnet is enabled and ray intersected with 
+		 * panel then attach the panel to magnet.
+		 */
+		const char* otherBodyName = pPanel->getName().c_str();
+		Vec2 magnetPosInParentSpace = Utils::toParentPositionSpace(this,
+			m_pMagnetSprite->getPosition());
+		float distance = magnetPosInParentSpace.distance(pPanel->getPosition());
+
+		if (strcmp(otherBodyName, PANEL_NODE) == 0 &&
+			distance <= MAGNET_WORK_DISTANCE && m_pMagnetPanel == nullptr)
+		{
+			cocos2d::log("Ray cast hit the panel !");
+			pPanel->attachToMagnet(m_pMagnetSprite);
+			m_pMagnetPanel = pPanel;
 		}
 	}
-	return true;
+	
+	// Return 0 terminates raycast
+	return 0;
 }

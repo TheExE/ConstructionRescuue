@@ -19,9 +19,6 @@
     <Filter Include="src\Nodes\Crane">
       <UniqueIdentifier>{805a2ab4-e993-480f-af11-1646307eb81b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Nodes\Brick">
-      <UniqueIdentifier>{f552019b-134d-42b3-8235-7c25983077e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Nodes\StaticBackground">
       <UniqueIdentifier>{65a57e28-1fd8-4ec9-91f4-7bc9d2f46e8a}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,15 @@
     </Filter>
     <Filter Include="src\Utils">
       <UniqueIdentifier>{41b99ca0-a9a8-4f30-95b4-3b74d6936d43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rdParty">
+      <UniqueIdentifier>{ad3b2143-b4a7-4007-8a3c-538425ff3933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\3rdParty\Box2dDebugDraw">
+      <UniqueIdentifier>{8d0b966b-3a36-4e87-8511-d719f1c6a921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Nodes\Panel">
+      <UniqueIdentifier>{f552019b-134d-42b3-8235-7c25983077e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +51,6 @@
     <ClCompile Include="..\Classes\Physics\PhysicsManager.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Nodes\Brick\Brick.cpp">
-      <Filter>src\Nodes\Brick</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Nodes\Crane\Crane.cpp">
       <Filter>src\Nodes\Crane</Filter>
     </ClCompile>
@@ -56,6 +59,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Layers\ControlsLayer.cpp">
       <Filter>src\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3rdParty\Box2dDebugDraw\B2DebugDrawLayer.cpp">
+      <Filter>src\3rdParty\Box2dDebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\3rdParty\Box2dDebugDraw\GLES-Render.cpp">
+      <Filter>src\3rdParty\Box2dDebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Nodes\Panel\Panel.cpp">
+      <Filter>src\Nodes\Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +86,6 @@
     <ClInclude Include="..\Classes\Physics\PhysicsManager.h">
       <Filter>src\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Nodes\Brick\Brick.h">
-      <Filter>src\Nodes\Brick</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Nodes\Crane\Crane.h">
       <Filter>src\Nodes\Crane</Filter>
     </ClInclude>
@@ -88,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Utils\Utils.h">
       <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3rdParty\Box2dDebugDraw\B2DebugDrawLayer.h">
+      <Filter>src\3rdParty\Box2dDebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\3rdParty\Box2dDebugDraw\GLES-Render.h">
+      <Filter>src\3rdParty\Box2dDebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Nodes\Panel\Panel.h">
+      <Filter>src\Nodes\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

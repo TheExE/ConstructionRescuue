@@ -1881,7 +1881,6 @@ Mat4 Node::getWorldToNodeTransform() const
     return getNodeToWorldTransform().getInversed();
 }
 
-
 Vec2 Node::convertToNodeSpace(const Vec2& worldPoint) const
 {
     Mat4 tmp = getWorldToNodeTransform();

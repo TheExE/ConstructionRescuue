@@ -4,15 +4,14 @@
 #include "cocos2d.h"
 #include "Nodes/Crane/Crane.h"
 #include "Physics/PhysicsManager.h"
-#include "Nodes/Brick/Brick.h"
+#include "Nodes/Panel/Panel.h"
 
 class HelloWorld : public cocos2d::Scene
 {
-public:
+public:	
     static cocos2d::Scene* createScene();
 
     virtual bool init();    
-    
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
@@ -20,7 +19,8 @@ public:
 
 private:
 	Crane* m_pCrane;
-	Brick* m_pBrick;	
+	Panel* m_pPanel;	
+	PhysicsManager* m_pPhysicsManager;
 	cocos2d::Sprite* m_pUIDriveLeft;
 	cocos2d::Sprite* m_pUIDriveRight;
 	cocos2d::Sprite* m_pUICraneMoveUp;

@@ -1,83 +1,106 @@
 #include "PhysicsManager.h"
 #include "HelloWorldScene.h"
-#include "../GameConsts.h"
+#include "Box2D/Dynamics/b2World.h"
+#include "Box2D/Dynamics/b2Body.h"
+#include "Box2D/Dynamics/b2Fixture.h"
+#include "Box2D/Collision/Shapes/b2PolygonShape.h"
+#include "3rdParty/Box2dDebugDraw/B2DebugDrawLayer.h"
 
 using namespace cocos2d;
 
 PhysicsManager::PhysicsManager()
 {
+	m_UniqueId = 0;
+}
 
+PhysicsManager::~PhysicsManager()
+{
+	// Release memory for the world
+	delete m_pPhysicsWorld;
+	m_pPhysicsWorld = nullptr;
 }
 
 PhysicsManager* PhysicsManager::getInstance()
 {
-	static PhysicsManager manager;
-	return &manager;
+	static PhysicsManager instance;
+	return &instance;
 }
 
-bool PhysicsManager::setContactListenerContext(Node* pNode)
+bool PhysicsManager::init()
 {
-	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(PhysicsManager::onContactBegin, this);
-	pNode->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, pNode);
-	return true;
+	m_pPhysicsWorld = new b2World(GRAVITY);
+	m_pPhysicsWorld->SetContactListener(this); // Listen for contact events
+
+	return m_pPhysicsWorld != nullptr;
 }
 
-/*
- * Callback for when 2 object goes into contact.
-*/
-bool PhysicsManager::onContactBegin(PhysicsContact& contact)
-{	
-	PhysicsBody* bodyA = contact.getShapeA()->getBody();
-	PhysicsBody* bodyB = contact.getShapeB()->getBody();
-	const char* bodyAName = bodyA->getNode()->getName().c_str();
-	const char* bodyBName = bodyB->getNode()->getName().c_str();
+void PhysicsManager::update()
+{
+	// Instruct the world to perform a single step of simulation. It is
+	// generally best to keep the time step and iterations fixed.
+	m_pPhysicsWorld->Step(PHYSICS_TIME_STEP, VELOCITY_ITERATION, POSITION_ITERATION);
 
-	// If contact contains some of the listener names then inform the listeners
-	for(int i = 0; i < (int)m_contactListeners.size(); i++)
+	// Iterate over the bodies in the physics world
+	for (b2Body* body = m_pPhysicsWorld->GetBodyList(); body; body = body->GetNext())
 	{
-		PhysicsContactListener& currentListener = m_contactListeners[i];
-		if (strcmp(bodyAName, currentListener.name) == 0)
+		if (body->GetUserData() != nullptr)
 		{
-			currentListener.onContactCallback(PhysicsContactInformation(bodyA, bodyB));			
-		}
-		else if(strcmp(bodyBName, currentListener.name) == 0)
-		{
-			currentListener.onContactCallback(PhysicsContactInformation(bodyB, bodyA));			
+			/*
+			 * Synchronize the sprite position
+			 * and rotation with the corresponding physics body
+			*/
+			Sprite* bodySprite = (Sprite*)body->GetUserData();
+			bodySprite->setPosition(Vec2(body->GetPosition().x * PTM_RATIO,
+				body->GetPosition().y * PTM_RATIO));
+			bodySprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 		}
 	}
-	
-	return true;
 }
 
 /*
 * Add box colider using sprite size.
 */
-void PhysicsManager::addBoxColider(Sprite* pSprite, float mass,
-	bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addBoxColider(extension::PhysicsSprite* pSprite, PhysicsBodyType bodyType,
+	float density)
 {
-	auto boxColider = PhysicsBody::createBox(pSprite->getContentSize(),
-		DEFAULT_PHYSICS_MATERIAL);
-	boxColider->setDynamic(bIsDynamic);
-	boxColider->setGravityEnable(bIsGravityEnabled);
-	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);	
-	boxColider->setMass(mass);
-	pSprite->addComponent(boxColider);
+	addCustomBoxCollider(pSprite, pSprite->getContentSize(), bodyType, density);
 }
 
 /*
  * Add box colider with custom size.
 */
-void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size, 
-	float mass, bool bIsDynamic, bool bIsGravityEnabled)
+void PhysicsManager::addCustomBoxCollider(extension::PhysicsSprite* pSprite, Size size,
+	PhysicsBodyType bodyType, float mass)
 {
-	auto boxColider = PhysicsBody::createBox(size,
-		DEFAULT_PHYSICS_MATERIAL);
-	boxColider->setDynamic(bIsDynamic);
-	boxColider->setGravityEnable(bIsGravityEnabled);
-	boxColider->setContactTestBitmask(CONTACT_COLLISION_MASK);
-	boxColider->setMass(mass);
-	pSprite->addComponent(boxColider);
+	// Create body def
+	b2BodyDef bodyDef;
+	bodyDef.type = convertToBox2dBodyType(bodyType);
+	bodyDef.userData = pSprite;	// Link sprite to rigidBody
+	b2Body* rigidBody = m_pPhysicsWorld->CreateBody(&bodyDef);
+	pSprite->setB2Body(rigidBody);
+	pSprite->setPTMRatio(PTM_RATIO);
+
+	// Create fixture defination
+	float boxVolume = size.width*size.height*size.width; /* Assume that length of
+															the box is same as width*/
+	float density = mass / boxVolume;
+	b2Fixture* bodyFixture = createBodyFixture(*rigidBody, size,
+		density);
+
+}
+
+b2Fixture* PhysicsManager::createBodyFixture(b2Body& rigidBody,
+	const Size& size, const float& density) const
+{
+	b2FixtureDef fixtureDef;
+	b2PolygonShape shape;
+	shape.SetAsBox((size.width / PTM_RATIO)*0.5f, (size.height / PTM_RATIO)*0.5f);
+	fixtureDef.shape = &shape;
+	fixtureDef.density = density;
+	fixtureDef.friction = DEFAULT_FRICTION;
+	fixtureDef.restitution = DEFAULT_RESTITUTION;
+
+	return rigidBody.CreateFixture(&fixtureDef);
 }
 
 /*
@@ -86,21 +109,94 @@ void PhysicsManager::addCustomBox(cocos2d::Sprite* pSprite, cocos2d::Size size,
  */
 void PhysicsManager::addContactListener(const char* bodyName,
 	ContactCallback onContactBegin)
-{	
-	m_contactListeners.push_back(PhysicsContactListener(bodyName, onContactBegin));
+{
+	m_ContactListeners.push_back(PhysicsContactListener(bodyName, onContactBegin));
 }
 
-bool PhysicsManager::containsJoint(std::vector<cocos2d::PhysicsJoint*> joints, 
-	const char* jointTag) const
+b2BodyType PhysicsManager::convertToBox2dBodyType(PhysicsBodyType type)
 {
-	bool isJointFound = false;
-	for (int i = 0; i < (int)joints.size(); i++)
+	b2BodyType realType;
+	switch (type)
 	{
-		if (joints.at(i)->getTag() == *jointTag)
+	case DYNAMIC:
+		realType = b2_dynamicBody;
+		break;
+	case KINEMATIC:
+		realType = b2_kinematicBody;
+		break;
+	case STATIC:
+		realType = b2_staticBody;
+		break;
+	}
+
+	return realType;
+}
+
+void PhysicsManager::castRay(b2RayCastCallback* callback,
+	const Vec2& first, const Vec2& second)
+{
+	if (m_pPhysicsWorld != nullptr)
+	{
+		b2Vec2 pointOne = b2Vec2(first.x/PTM_RATIO, first.y/PTM_RATIO);
+		b2Vec2 pointTwo = b2Vec2(second.x/PTM_RATIO, second.y/PTM_RATIO);
+		m_pPhysicsWorld->RayCast(callback, pointOne, pointTwo);
+	}
+	else
+	{
+		cocos2d::log("PhysicsManager: [castRay] PhysicsWorld is null !");
+	}
+}
+
+/*
+* Box2d callback for when
+* contact between body fixtures starts.
+*/
+void PhysicsManager::BeginContact(b2Contact* contact)
+{
+	using namespace extension;
+
+	b2Fixture* pFixtureA = contact->GetFixtureA();
+	b2Fixture* pFixtureB = contact->GetFixtureB();
+
+	PhysicsSprite* pSpriteA = (PhysicsSprite*)pFixtureA->GetUserData();
+	PhysicsSprite* pSpriteB = (PhysicsSprite*)pFixtureB->GetUserData();
+
+	if (pSpriteA != nullptr && pSpriteB != nullptr)
+	{
+		const char* bodyAName = pSpriteA->getName().c_str();
+		const char* bodyBName = pSpriteB->getName().c_str();
+
+		// If contact contains some of the listener names then inform the listeners
+		for (int i = 0; i < (int)m_ContactListeners.size(); i++)
 		{
-			isJointFound = true;
-			break;
+			PhysicsContactListener& currentListener = m_ContactListeners[i];
+			if (strcmp(bodyAName, currentListener.name) == 0)
+			{
+				currentListener.onContactCallback(PhysicsContactInformation(pFixtureA,
+					pFixtureB));
+			}
+			else if (strcmp(bodyBName, currentListener.name) == 0)
+			{
+				currentListener.onContactCallback(PhysicsContactInformation(pFixtureB,
+					pFixtureA));
+			}
 		}
 	}
-	return isJointFound;
+}
+
+/*
+ * Box2d callback for when
+ * contact between body fixtures ends.
+ */
+void PhysicsManager::EndContact(b2Contact* contact)
+{
+
+}
+
+/*
+ * For this to work sprite visibility needs to be set to false.
+ */
+void PhysicsManager::enableDebugDraw(Node* rootNode)
+{
+	rootNode->addChild(B2DebugDrawLayer::create(m_pPhysicsWorld, PTM_RATIO), 999);
 }

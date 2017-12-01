@@ -6,5 +6,5 @@ class ControlsLayer : public cocos2d::Layer
 {
 	public:
 		static ControlsLayer* create();
-		bool initControlsLayer();		
+		bool initControlsLayer();				
 };

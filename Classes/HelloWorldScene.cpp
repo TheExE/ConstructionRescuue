@@ -1,15 +1,15 @@
 #include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
 #include "GameConsts.h"
 #include "Nodes/StaticBackground/StaticBackground.h"
 #include "Layers/ControlsLayer.h"
+#include "Box2D/Dynamics/b2World.h"
 
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
 	// 'scene' is an autorelease object
-	auto scene = Scene::createWithPhysics();
+	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
 	auto layer = HelloWorld::create();
@@ -37,12 +37,19 @@ bool HelloWorld::init()
     {
         return false;
     }
-
+	
 	// Display fps info
-	Director::getInstance()->setDisplayStats(false);
+	Director::getInstance()->setDisplayStats(false);		
+
+	// Init physics	
+	m_pPhysicsManager = PhysicsManager::getInstance();
+	if (!m_pPhysicsManager->init())
+	{
+		cocos2d::log("PhysicsManager: Failed to initialize !");
+	}
 
 	// Load layout
-	Node* rootNode = Node::create();
+	Node* rootNode = Node::create();	
 	
 	// Create the world
 	StaticBackground* pBackground = StaticBackground::create();
@@ -55,32 +62,16 @@ bool HelloWorld::init()
 		cocos2d::log("StaticBacground: Failed to initialize !");
 	}
 	
-	m_pCrane = Crane::create();
-	if (m_pCrane->initCrane())
-	{
-		rootNode->addChild(m_pCrane);
-	}
-	else
-	{
-		cocos2d::log("Crane: failed to initialize !");
-	}
+	// Init crane
+	m_pCrane = Crane::create();	
+	rootNode->addChild(m_pCrane);	
 
-	// Init brick
-	m_pBrick = new Brick();
-	if (m_pBrick->initBrick())
-	{
-		rootNode->addChild(m_pBrick);
-	}
-	else
-	{
-		cocos2d::log("Brick: Failed to initialize !");
-	}
+	// Init panel
+	m_pPanel = Panel::create();
+	rootNode->addChild(m_pPanel);
 
 	// Add the scene root
-	addChild(rootNode);
-
-	// Set physics contact listener context
-	PhysicsManager::getInstance()->setContactListenerContext(this);
+	addChild(rootNode);	
 
 	// UI elements
 	ControlsLayer* pControlsLayer = ControlsLayer::create();
@@ -131,10 +122,12 @@ bool HelloWorld::init()
 void HelloWorld::update(float deltaTime)
 {
 	m_pCrane->update(deltaTime);
+	m_pPanel->update(deltaTime);
+	m_pPhysicsManager->update();
 }
 
 void HelloWorld::onMouseUp(Event* plainEvent)
-{
+{	
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
 
@@ -159,22 +152,22 @@ void HelloWorld::onMouseDown(Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
-	
-	if (m_pUIDriveLeft->getBoundingBox().containsPoint(mouseClickPosition))
+		
+	if (m_pUIDriveRight->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingCrane(-Crane::MOVE_SPEED);
+		m_pCrane->moveCraneRight();
 	}
-	else if (m_pUIDriveRight->getBoundingBox().containsPoint(mouseClickPosition))
+	else if (m_pUIDriveLeft->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingCrane(Crane::MOVE_SPEED);
+		m_pCrane->moveCraneLeft();
 	}
 	else if (m_pUICraneMoveUp->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingTheRope(-Crane::CHAIN_MOVE_SPEED);
+		m_pCrane->moveChainUp();
 	}
 	else if (m_pUICraneMoveDown->getBoundingBox().containsPoint(mouseClickPosition))
 	{
-		m_pCrane->startMovingTheRope(Crane::CHAIN_MOVE_SPEED);
+		m_pCrane->moveChainDown();
 	}
 }
 
