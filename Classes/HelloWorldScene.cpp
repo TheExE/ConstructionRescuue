@@ -24,22 +24,22 @@ Scene* HelloWorld::createScene()
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+	printf("Error while loading: %s\n", filename);
+	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Scene::init() )
-    {
-        return false;
-    }
-	
+	//////////////////////////////
+	// 1. super init first
+	if (!Scene::init())
+	{
+		return false;
+	}
+
 	// Display fps info
-	Director::getInstance()->setDisplayStats(false);		
+	Director::getInstance()->setDisplayStats(false);
 
 	// Init physics	
 	m_pPhysicsManager = PhysicsManager::getInstance();
@@ -49,8 +49,8 @@ bool HelloWorld::init()
 	}
 
 	// Load layout
-	Node* rootNode = Node::create();	
-	
+	Node* rootNode = Node::create();
+
 	// Create the world
 	StaticBackground* pBackground = StaticBackground::create();
 	if (pBackground->initStaticBackground())
@@ -61,22 +61,22 @@ bool HelloWorld::init()
 	{
 		cocos2d::log("StaticBacground: Failed to initialize !");
 	}
-	
+
 	// Init crane
-	m_pCrane = Crane::create();	
-	rootNode->addChild(m_pCrane);	
+	m_pCrane = Crane::create();
+	rootNode->addChild(m_pCrane);
 
 	// Init panel
 	m_pPanel = Panel::create();
 	rootNode->addChild(m_pPanel);
 
 	// Add the scene root
-	addChild(rootNode);	
+	addChild(rootNode);
 
 	// UI elements
 	ControlsLayer* pControlsLayer = ControlsLayer::create();
 	if (pControlsLayer->initControlsLayer())
-	{		
+	{
 		m_pUIDriveLeft = (Sprite*)pControlsLayer->getChildByName(BUTTON_LEFT);
 		m_pUIDriveRight = (Sprite*)pControlsLayer->getChildByName(BUTTON_RIGHT);
 		m_pUICraneMoveDown = (Sprite*)pControlsLayer->getChildByName(BUTTON_DOWN);
@@ -116,7 +116,7 @@ bool HelloWorld::init()
 	_eventDispatcher->addEventListenerWithFixedPriority(m_pMouseListener, 1);
 	scheduleUpdate();
 
-    return true;
+	return true;
 }
 
 void HelloWorld::update(float deltaTime)
@@ -127,7 +127,7 @@ void HelloWorld::update(float deltaTime)
 }
 
 void HelloWorld::onMouseUp(Event* plainEvent)
-{	
+{
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
 
@@ -152,7 +152,7 @@ void HelloWorld::onMouseDown(Event* plainEvent)
 {
 	EventMouse* mouseEvent = (EventMouse*)plainEvent;
 	const Vec2 mouseClickPosition = mouseEvent->getLocationInView();
-		
+
 	if (m_pUIDriveRight->getBoundingBox().containsPoint(mouseClickPosition))
 	{
 		m_pCrane->moveCraneRight();

@@ -2,11 +2,11 @@
 
 #include "cocos2d.h"
 #include "extensions/physics-nodes/CCPhysicsSprite.h"
-class Panel: public cocos2d::extension::PhysicsSprite
+class Panel : public cocos2d::extension::PhysicsSprite
 {
 public:
 	static Panel* create();
-	bool init() override;	
+	bool init() override;
 	void attachToMagnet(cocos2d::Sprite* pMagnetSprite);
 	void detachFromMagnet();
 	void update(float deltaTime);
